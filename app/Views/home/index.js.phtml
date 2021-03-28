@@ -1,0 +1,11 @@
+<script>
+
+    function enableHighlight() {
+        $('#highlight-btn').prop('disabled', false);
+    }
+
+    $('input[name="action"]').on('click', e => {
+        $('#main-form').prop('action', '/' + e.target.value.toLowerCase().trim());
+    });
+
+</script>

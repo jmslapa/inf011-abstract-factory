@@ -1,0 +1,24 @@
+{
+    "name": "inf011/abstract-factory",
+    "description": "Atividade 1 - Implementando abstract factories",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Joao Lapa",
+            "email": "joaomanoel1996@hotmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "./app",
+            "Bootstrap\\": "./bootstrap",
+            "Plugins\\": "./plugins",
+            "Support\\": "./support"
+        }
+    },
+    "require": {
+        "php": ">=7.4",
+        "scrivo/highlight.php": "9.14",
+        "jmslapa/mf": "^1.1"
+    }
+}
