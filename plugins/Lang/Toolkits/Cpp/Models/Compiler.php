@@ -14,7 +14,7 @@ class Compiler implements CompilerContract
         exec("g++ $filePath -o $outputFileName", $output, $error);
         
         if($error) {
-            throw new FailedCompilationException('Não foi possível compilar o arquivo .java', $output);
+            throw new FailedCompilationException('Não foi possível compilar o arquivo .java', $error);
         }
 
         return $outputFileName;
