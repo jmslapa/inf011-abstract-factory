@@ -18,12 +18,12 @@ class LanguageToolkitFactory implements LanguageToolkitFactoryContract
     }
 
     public static function makeCompiler(): CompilerContract
-   {
-       return new Compiler;
-   }
+    {
+        return new Compiler;
+    }
 
-   public static function makeToolkit(): LanguageToolkitContract
-   {
-       return new LanguageToolkit(self::makeHighlighter(), self::makeCompiler());
-   }
+    public static function makeToolkit(): LanguageToolkitContract
+    {
+        return new LanguageToolkit(self::makeHighlighter(), self::makeCompiler());
+    }
 }

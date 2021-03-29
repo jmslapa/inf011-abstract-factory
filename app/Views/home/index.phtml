@@ -7,26 +7,26 @@
             <p class="lead">Upload your code and take advantage of the highlighting and compilation features</p>
             <hr class="my-4">
             <div class="row">
-                <?php if($this->view->fileName) { ?>
-                    <h3 class="ml-3 font-weight-light"><?=$this->view->fileName?></h4>
+                <?php if ($this->view->fileName) { ?>
+                    <h3 class="ml-3 font-weight-light"><?= $this->view->fileName ?></h4>
                 <?php } ?>
-                <?php if($this->view->error) { ?>
+                <?php if ($this->view->error) { ?>
                     <div class="alert alert-danger w-100 mx-3" role="alert">
-                      <h4 class="alert-heading">Sorry,</h4>
-                      <p><?=$this->view->error?> <?=$this->view->errorComplement?></p>
+                        <h4 class="alert-heading">Sorry,</h4>
+                        <p><?= $this->view->error ?> <?= $this->view->errorComplement ?></p>
                     </div>
                 <?php } ?>
-                
-                <?php if($this->view->highlighted) { ?>
+
+                <?php if ($this->view->highlighted) { ?>
                     <div class="container my-3">
-                        <pre><code class="hljs <?=$this->view->highlighted->language?>"><?=$this->view->highlighted->value?></code></pre>
-                    </div>                    
+                        <pre><code class="hljs <?= $this->view->highlighted->language ?>"><?= $this->view->highlighted->value ?></code></pre>
+                    </div>
                 <?php } ?>
             </div>
             <form id="main-form" method="post" enctype="multipart/form-data">
                 <div class="row justify-content-between align-items-center">
-                    <input type="hidden" name="fileName" value="<?=$this->view->fileName?>" />
-                    <input type="hidden" name="code" value="<?=base64_encode($this->view->code)?>" />
+                    <input type="hidden" name="fileName" value="<?= $this->view->fileName ?>" />
+                    <input type="hidden" name="code" value="<?= base64_encode($this->view->code) ?>" />
                     <div class="form-group ml-3">
                         <input id="input-file" onchange="enableHighlight()" class="form-control-file" type="file" name="file">
                     </div>

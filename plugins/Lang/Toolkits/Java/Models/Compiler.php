@@ -10,9 +10,8 @@ class Compiler implements CompilerContract
     public function compile(string $filePath): string
     {
         exec("javac $filePath", $output, $error);
-        
-        if($error) {
-            throw new FailedCompilationException('Não foi possível compilar o arquivo .java', $error);
+        if ($error) {
+            throw new FailedCompilationException('Could not compile the .java file.', $error);
         }
 
         return str_replace('.java', '.class', $filePath);

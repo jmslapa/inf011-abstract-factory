@@ -12,4 +12,3 @@ class Application extends BootstrapApplication
         return $routes;
     }
 }
-

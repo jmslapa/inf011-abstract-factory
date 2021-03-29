@@ -19,7 +19,6 @@ class Highlighter implements HighlighterContract
     public function highlight(string $filePath): object
     {
         $code = file_get_contents($filePath);
-
         return $this->highlighter->highlight(self::LANG, $code);
-    }    
+    }
 }

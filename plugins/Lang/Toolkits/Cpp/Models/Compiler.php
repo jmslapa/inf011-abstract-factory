@@ -12,9 +12,8 @@ class Compiler implements CompilerContract
         $outputFileName = str_replace('.cpp', '', $filePath);
 
         exec("g++ $filePath -o $outputFileName", $output, $error);
-        
-        if($error) {
-            throw new FailedCompilationException('Não foi possível compilar o arquivo .java', $error);
+        if ($error) {
+            throw new FailedCompilationException('Could not compile the .cpp file.', $error);
         }
 
         return $outputFileName;
