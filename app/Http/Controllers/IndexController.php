@@ -2,12 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\LanguageService;
 use Support\Contracts\Models\LanguageToolkitContract;
 use Support\Exceptions\MissingLanguageToolkitException;
 use Support\Abstracts\Http\Controller;
+use Support\Contracts\Services\LanguageServiceContract;
 
 class IndexController extends Controller
 {
+    private LanguageServiceContract $service;
+
+    public function __construct()
+    {
+        $this->service = new LanguageService;
+    }
+
     public function index()
     {
         $this->render('home.index');
@@ -16,14 +25,11 @@ class IndexController extends Controller
     public function highlight()
     {
         $file = (object) $_FILES['file'];
-        $ext = pathinfo($file->name, PATHINFO_EXTENSION);
 
         try {
-            $toolkit = $this->getLanguageToolKit($ext);
-
             $this->view->fileName = $file->name;
             $this->view->code = file_get_contents($file->tmp_name);
-            $this->view->highlighted = $toolkit->highlight($file->tmp_name);
+            $this->view->highlighted = $this->service->highlight($file);
         } catch (MissingLanguageToolkitException $e) {
             $this->setErrorMessages($e->getMessage());
         }
@@ -33,21 +39,11 @@ class IndexController extends Controller
 
     public function compile()
     {
-        ['fileName' => $file, 'code' => $code] = $_POST;
-        $ext = pathinfo($file, PATHINFO_EXTENSION);
-
+        ['fileName' => $fileName, 'code' => $code] = $_POST;
+        $fileContent = base64_decode($code);
+        
         try {
-            $toolkit = $this->getLanguageToolkit($ext);
-
-            $fileContent = base64_decode($code);
-            $fileName = src("storage/tmp/$file");
-            file_put_contents($fileName, $fileContent);
-
-            $binFile = $toolkit->compile($fileName);
-            push_download(src('storage/tmp/'), [$fileName, $binFile]);
-
-            unlink($fileName);
-            unlink($binFile);
+            $this->service->compile($fileName, $fileContent);
         } catch (MissingLanguageToolkitException $e) {
             $this->setErrorMessages($e->getMessage());
         }
@@ -55,28 +51,27 @@ class IndexController extends Controller
         $this->render('home.index');
     }
 
-    protected function setErrorMessages(string $message, bool $showAvaliableExtensions = true): void
+    protected function setErrorMessages(string $message, bool $showAvaliableLanguages = true): void
     {
-        $available = preg_grep('/^([^.])/', scandir(src('plugins/Lang/Toolkits')));
-        $lastAvailable = strtolower(array_pop($available));
-        $availableExtensions = array_reduce($available, fn ($acc, $cur) => "$acc ." . strtolower($cur) . ',', 'Available file extensions are') . " .$lastAvailable.";
+        $available = $this->service->getSupportedLanguages();
+        
+        switch(count($available)) {
+            case 0:
+                $availableLanguages = "No language is supported.";
+                break;
+            case 1:
+                $availableLanguages = "Only ".strtolower(array_shift($available))." is supported.";
+                break;
+            default:
+                $firstAvailable = strtolower(array_shift($available));
+                $lastAvailable = strtolower(array_pop($available));
+                $availableLanguages = array_reduce($available, fn ($acc, $cur) => "$acc, ".strtolower($cur), "Available file extensions are $firstAvailable") . " and $lastAvailable.";              
+        }
 
         $this->view->error = $message;
 
-        if ($showAvaliableExtensions) {
-            $this->view->errorComplement = $availableExtensions;
+        if ($showAvaliableLanguages) {
+            $this->view->errorComplement = $availableLanguages;
         }
-    }
-
-    protected function getLanguageToolkit(string $sourceCodeExtension): LanguageToolkitContract
-    {
-        $lang = ucfirst($sourceCodeExtension);
-        $factoryClass = "\\Plugins\\Lang\\Toolkits\\$lang\\Factory\\LanguageToolkitFactory";
-
-        if (!class_exists($factoryClass)) {
-            throw new MissingLanguageToolkitException('There is no language toolkit to handle this source code.');
-        }
-
-        return $factoryClass::makeToolkit();
     }
 }
