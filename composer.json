@@ -20,5 +20,8 @@
         "php": ">=7.4",
         "scrivo/highlight.php": "9.14",
         "jmslapa/mf": "^1.1"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "3.*"
     }
 }
