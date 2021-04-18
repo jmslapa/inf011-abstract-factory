@@ -20,11 +20,11 @@ class Application extends BootstrapApplication
 
     protected function boot()
     {
+        parent::boot();
         $this->container = Container::getInstance();
         $this->registerHelpers();
         $this->registerBindings();
         $this->registerLanguageToolkits();
-        parent::boot();
     }
 
     private function registerBindings()

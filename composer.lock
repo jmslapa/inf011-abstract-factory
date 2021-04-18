@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0c8becbc03de8cf305d389fe4ce9fff9",
+    "content-hash": "f467ec3825228b41146b0b6acb23e946",
     "packages": [
         {
             "name": "jmslapa/mf",
-            "version": "1.1.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jmslapa/mf.git",
-                "reference": "b762b7bb2ca778f6521807db65c046eed48285eb"
+                "reference": "7e9fafa6645b8abf795baf843cbc73e7522944c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jmslapa/mf/zipball/b762b7bb2ca778f6521807db65c046eed48285eb",
-                "reference": "b762b7bb2ca778f6521807db65c046eed48285eb",
+                "url": "https://api.github.com/repos/jmslapa/mf/zipball/7e9fafa6645b8abf795baf843cbc73e7522944c2",
+                "reference": "7e9fafa6645b8abf795baf843cbc73e7522944c2",
                 "shasum": ""
             },
             "type": "library",
@@ -37,7 +37,7 @@
                 }
             ],
             "description": "Mini framework mvc",
-            "time": "2021-03-28T18:21:24+00:00"
+            "time": "2021-04-18T19:54:01+00:00"
         },
         {
             "name": "scrivo/highlight.php",
