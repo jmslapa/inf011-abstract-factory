@@ -4,5 +4,5 @@ namespace Support\Contracts\Models;
 
 interface HighlighterContract
 {
-    public function highlight(string $filePath) : object;
+    public function highlight(string $filePath): object;
 }
