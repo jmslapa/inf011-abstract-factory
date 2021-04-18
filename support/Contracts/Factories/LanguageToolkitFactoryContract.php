@@ -8,9 +8,9 @@ use Support\Contracts\Models\LanguageToolkitContract;
 
 interface LanguageToolkitFactoryContract
 {
-    public static function makeHighlighter() : HighlighterContract;
-    
-    public static function makeCompiler() : CompilerContract;
+    public function makeHighlighter(): HighlighterContract;
 
-    public static function makeToolkit() : LanguageToolkitContract;
+    public function makeCompiler(): CompilerContract;
+
+    public function makeToolkit(): LanguageToolkitContract;
 }
