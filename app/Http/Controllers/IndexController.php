@@ -14,7 +14,7 @@ class IndexController extends Controller
 
     public function __construct()
     {
-        $this->service = new LanguageService;
+        $this->service = container('languageService');
     }
 
     public function index()
@@ -41,7 +41,7 @@ class IndexController extends Controller
     {
         ['fileName' => $fileName, 'code' => $code] = $_POST;
         $fileContent = base64_decode($code);
-        
+
         try {
             $this->service->compile($fileName, $fileContent);
         } catch (MissingLanguageToolkitException $e) {
@@ -54,18 +54,20 @@ class IndexController extends Controller
     protected function setErrorMessages(string $message, bool $showAvaliableLanguages = true): void
     {
         $available = $this->service->getSupportedLanguages();
-        
-        switch(count($available)) {
+
+        switch (count($available)) {
             case 0:
                 $availableLanguages = "No language is supported.";
                 break;
             case 1:
-                $availableLanguages = "Only ".strtolower(array_shift($available))." is supported.";
+                $availableLanguages = "Only " . array_shift($available) . " is supported.";
                 break;
             default:
-                $firstAvailable = strtolower(array_shift($available));
-                $lastAvailable = strtolower(array_pop($available));
-                $availableLanguages = array_reduce($available, fn ($acc, $cur) => "$acc, ".strtolower($cur), "Available file extensions are $firstAvailable") . " and $lastAvailable.";              
+                $firstAvailable = array_shift($available);
+                $lastAvailable = array_pop($available);
+                $availableLanguages = array_reduce($available, fn ($acc, $cur) => "$acc, "
+                    . $cur, "Available file extensions are $firstAvailable")
+                    . " and $lastAvailable.";
         }
 
         $this->view->error = $message;
