@@ -2,28 +2,25 @@
 
 namespace App\Services;
 
+use OutOfBoundsException;
 use Support\Contracts\Models\LanguageToolkitContract;
 use Support\Contracts\Services\LanguageServiceContract;
 use Support\Exceptions\MissingLanguageToolkitException;
 
-class LanguageService  implements LanguageServiceContract
+class LanguageService implements LanguageServiceContract
 {
     public function getLanguageToolKit(string $fileExtension): LanguageToolkitContract
     {
-        $lang = ucfirst($fileExtension);
-        $factoryClass = "\\Plugins\\Lang\\Toolkits\\$lang\\Factory\\LanguageToolkitFactory";
-
-        if (!class_exists($factoryClass)) {
-            throw new MissingLanguageToolkitException('There is no language toolkit to handle this source code.');
+        try {
+            return container("{$fileExtension}ToolkitFactory")->makeToolkit();
+        } catch (OutOfBoundsException $e) {
+            throw new MissingLanguageToolkitException('There is no language toolkit for this source code.');
         }
-
-        return $factoryClass::makeToolkit();
     }
 
     public function getSupportedLanguages(): array
     {
-        $available = preg_grep('/^([^.])/', scandir(src('plugins/Lang/Toolkits')));
-        return array_filter($available, fn($lang) => class_exists("\\Plugins\\Lang\\Toolkits\\$lang\\Factory\\LanguageToolkitFactory"));
+        return container('supportedLangs');
     }
 
     public function highlight(object $file): object
